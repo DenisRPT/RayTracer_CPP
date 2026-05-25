@@ -16,7 +16,3 @@ class Vec3{
     float length() const;
     float length_squared() const;
 };
-
-inline Vec3 operator*(float s,const Vec3& v);
-inline float dot(const Vec3& u , const Vec3& v);
-inline Vec3 unit_vector(Vec3 v);

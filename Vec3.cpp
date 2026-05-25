@@ -36,14 +36,3 @@ float Vec3::length_squared() const{
     return (x*x+y*y+z*z);
 }
 
-inline Vec3 operator*(float s,const Vec3& v){
-    return v*s;
-}
-
-inline float dot(const Vec3& u,const Vec3&v){
-    return u.x*v.x + u.y*v.y + u.z*v.z;
-}
-
-inline Vec3 unit_vector(Vec3 v){
-    return v/v.length();
-}
