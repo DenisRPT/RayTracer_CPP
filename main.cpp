@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "utils.h"
+#include "HittableList.h"
+#include "Sphere.h"
 
 
 int main(){
@@ -11,22 +12,32 @@ int main(){
     float VP_HEIGHT = 2.0f;
     float VP_WIDTH = RATIO*VP_HEIGHT;
     float FOCAL_LENGTH = 1.0f;
-    
+
+    HittableList world;
+    world.add(std::make_shared<Sphere>(Vec3(0.0f,0.0f,-1.0f),0.5f));
+    world.add(std::make_shared<Sphere>(Vec3(0.0f,-100.5f,-1.0f),100.0f));
+
     Vec3 origin;
     Vec3 horizontal(VP_WIDTH,0.0f,0.0f);
     Vec3 vertical(0.0f,VP_HEIGHT,0.0f);
     Vec3 ll_corner = origin-horizontal/2-vertical/2-Vec3(0.0f,0.0f,FOCAL_LENGTH);
 
+    int samples_per_pixel = 100;
     std::ofstream out("rayImage.ppm");
     out << "P3\n" << IMG_WIDTH << ' ' << IMG_HEIGHT << "\n255\n";
     for(int j=IMG_HEIGHT-1;j>=0;--j){
         std::cerr<< "\rRendering row: " << j << ' ' << std::flush;
         for(int i=0;i<IMG_WIDTH;++i){
-            float u = float(i)/(IMG_WIDTH-1);
-            float v = float(j)/(IMG_HEIGHT-1);
-            Vec3 direction = ll_corner+horizontal*u+vertical*v-origin;
-            Ray r(origin,direction);
-            Vec3 pixel_color = ray_color(r);
+            Vec3 pixel_color;
+            for(int s=0;s<samples_per_pixel;++s){
+                float u =(float(i) + random_float())/(IMG_WIDTH-1);
+                float v = (float(j) + random_float())/(IMG_HEIGHT-1);
+                Vec3 direction = ll_corner+horizontal*u+vertical*v-origin;
+                Ray r(origin,direction);
+                pixel_color = pixel_color + ray_color(r,world);
+            }
+            float scale = 1.0f/samples_per_pixel;
+            pixel_color = pixel_color*scale;
             int ir = static_cast<int>(255.999*pixel_color.x);
             int ig = static_cast<int>(255.999*pixel_color.y);
             int ib = static_cast<int>(255.999*pixel_color.z);

@@ -1,6 +1,6 @@
 #pragma once
-#include "Vec3.h"
-#include "Ray.h"
+#include "Hittable.h"
+#include <random>
 
 inline Vec3 operator*(float s,const Vec3& v){
     return v*s;
@@ -14,6 +14,9 @@ inline Vec3 unit_vector(Vec3 v){
     return v/v.length();
 }
 
-Vec3 ray_color(const Ray& r);
-
-float hit_sphere(const Vec3& center, float radius,const Ray& r);
+inline float random_float(){
+    static std::uniform_real_distribution<float> distribution(0.0f,1.0f);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+Vec3 ray_color(const Ray& r,const Hittable& world);
