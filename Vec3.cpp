@@ -29,7 +29,7 @@ Vec3 Vec3::operator/(float s) const{
 }
 
 float Vec3::length() const{
-    return std::sqrt(x*x+y*x+z*z);
+    return std::sqrt(x*x+y*y+z*z);
 }
 
 float Vec3::length_squared() const{

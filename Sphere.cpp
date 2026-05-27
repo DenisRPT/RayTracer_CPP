@@ -19,5 +19,6 @@ bool Sphere::hit(const Ray& r,float t_min,float t_max,hit_record& rec) const{
     rec.t = root;
     rec.p = r.at(rec.t);
     rec.normal = (rec.p-center)/radius;
+    rec.material = material;
     return true;
 }

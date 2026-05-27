@@ -1,12 +1,15 @@
 #pragma once
 #include "Vec3.h"
 #include "Ray.h"
+#include "Material.h"
+#include <memory>
 
 
 struct hit_record{
     Vec3 p; //hit point
     Vec3 normal; //surface view direction
     float t; // dist from camera to hit point
+    std::shared_ptr<Material> material;
 };
 
 class Hittable {
